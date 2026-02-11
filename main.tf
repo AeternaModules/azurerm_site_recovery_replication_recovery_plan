@@ -6,34 +6,37 @@ resource "azurerm_site_recovery_replication_recovery_plan" "site_recovery_replic
   source_recovery_fabric_id = each.value.source_recovery_fabric_id
   target_recovery_fabric_id = each.value.target_recovery_fabric_id
 
-  boot_recovery_group {
-    dynamic "post_action" {
-      for_each = each.value.boot_recovery_group.post_action != null ? [each.value.boot_recovery_group.post_action] : []
-      content {
-        fabric_location           = post_action.value.fabric_location
-        fail_over_directions      = post_action.value.fail_over_directions
-        fail_over_types           = post_action.value.fail_over_types
-        manual_action_instruction = post_action.value.manual_action_instruction
-        name                      = post_action.value.name
-        runbook_id                = post_action.value.runbook_id
-        script_path               = post_action.value.script_path
-        type                      = post_action.value.type
+  dynamic "boot_recovery_group" {
+    for_each = each.value.boot_recovery_group
+    content {
+      dynamic "post_action" {
+        for_each = boot_recovery_group.value.post_action != null ? [boot_recovery_group.value.post_action] : []
+        content {
+          fabric_location           = post_action.value.fabric_location
+          fail_over_directions      = post_action.value.fail_over_directions
+          fail_over_types           = post_action.value.fail_over_types
+          manual_action_instruction = post_action.value.manual_action_instruction
+          name                      = post_action.value.name
+          runbook_id                = post_action.value.runbook_id
+          script_path               = post_action.value.script_path
+          type                      = post_action.value.type
+        }
       }
-    }
-    dynamic "pre_action" {
-      for_each = each.value.boot_recovery_group.pre_action != null ? [each.value.boot_recovery_group.pre_action] : []
-      content {
-        fabric_location           = pre_action.value.fabric_location
-        fail_over_directions      = pre_action.value.fail_over_directions
-        fail_over_types           = pre_action.value.fail_over_types
-        manual_action_instruction = pre_action.value.manual_action_instruction
-        name                      = pre_action.value.name
-        runbook_id                = pre_action.value.runbook_id
-        script_path               = pre_action.value.script_path
-        type                      = pre_action.value.type
+      dynamic "pre_action" {
+        for_each = boot_recovery_group.value.pre_action != null ? [boot_recovery_group.value.pre_action] : []
+        content {
+          fabric_location           = pre_action.value.fabric_location
+          fail_over_directions      = pre_action.value.fail_over_directions
+          fail_over_types           = pre_action.value.fail_over_types
+          manual_action_instruction = pre_action.value.manual_action_instruction
+          name                      = pre_action.value.name
+          runbook_id                = pre_action.value.runbook_id
+          script_path               = pre_action.value.script_path
+          type                      = pre_action.value.type
+        }
       }
+      replicated_protected_items = boot_recovery_group.value.replicated_protected_items
     }
-    replicated_protected_items = each.value.boot_recovery_group.replicated_protected_items
   }
 
   failover_recovery_group {

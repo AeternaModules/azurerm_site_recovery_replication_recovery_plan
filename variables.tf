@@ -77,7 +77,7 @@ EOT
     recovery_vault_id         = string
     source_recovery_fabric_id = string
     target_recovery_fabric_id = string
-    boot_recovery_group = object({
+    boot_recovery_group = list(object({
       post_action = optional(object({
         fabric_location           = optional(string)
         fail_over_directions      = set(string)
@@ -99,7 +99,7 @@ EOT
         type                      = string
       }))
       replicated_protected_items = optional(list(string))
-    })
+    }))
     failover_recovery_group = object({
       post_action = optional(object({
         fabric_location           = optional(string)
@@ -151,5 +151,13 @@ EOT
       recovery_zone      = optional(string)
     }))
   }))
+  validation {
+    condition = alltrue([
+      for k, v in var.site_recovery_replication_recovery_plans : (
+        length(v.boot_recovery_group) >= 1
+      )
+    ])
+    error_message = "Each boot_recovery_group list must contain at least 1 items"
+  }
 }
 
