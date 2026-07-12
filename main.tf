@@ -10,7 +10,7 @@ resource "azurerm_site_recovery_replication_recovery_plan" "site_recovery_replic
     for_each = each.value.boot_recovery_group
     content {
       dynamic "post_action" {
-        for_each = boot_recovery_group.value.post_action != null ? [boot_recovery_group.value.post_action] : []
+        for_each = boot_recovery_group.value.post_action != null ? boot_recovery_group.value.post_action : []
         content {
           fabric_location           = post_action.value.fabric_location
           fail_over_directions      = post_action.value.fail_over_directions
@@ -23,7 +23,7 @@ resource "azurerm_site_recovery_replication_recovery_plan" "site_recovery_replic
         }
       }
       dynamic "pre_action" {
-        for_each = boot_recovery_group.value.pre_action != null ? [boot_recovery_group.value.pre_action] : []
+        for_each = boot_recovery_group.value.pre_action != null ? boot_recovery_group.value.pre_action : []
         content {
           fabric_location           = pre_action.value.fabric_location
           fail_over_directions      = pre_action.value.fail_over_directions
@@ -41,7 +41,7 @@ resource "azurerm_site_recovery_replication_recovery_plan" "site_recovery_replic
 
   failover_recovery_group {
     dynamic "post_action" {
-      for_each = each.value.failover_recovery_group.post_action != null ? [each.value.failover_recovery_group.post_action] : []
+      for_each = each.value.failover_recovery_group.post_action != null ? each.value.failover_recovery_group.post_action : []
       content {
         fabric_location           = post_action.value.fabric_location
         fail_over_directions      = post_action.value.fail_over_directions
@@ -54,7 +54,7 @@ resource "azurerm_site_recovery_replication_recovery_plan" "site_recovery_replic
       }
     }
     dynamic "pre_action" {
-      for_each = each.value.failover_recovery_group.pre_action != null ? [each.value.failover_recovery_group.pre_action] : []
+      for_each = each.value.failover_recovery_group.pre_action != null ? each.value.failover_recovery_group.pre_action : []
       content {
         fabric_location           = pre_action.value.fabric_location
         fail_over_directions      = pre_action.value.fail_over_directions
@@ -70,7 +70,7 @@ resource "azurerm_site_recovery_replication_recovery_plan" "site_recovery_replic
 
   shutdown_recovery_group {
     dynamic "post_action" {
-      for_each = each.value.shutdown_recovery_group.post_action != null ? [each.value.shutdown_recovery_group.post_action] : []
+      for_each = each.value.shutdown_recovery_group.post_action != null ? each.value.shutdown_recovery_group.post_action : []
       content {
         fabric_location           = post_action.value.fabric_location
         fail_over_directions      = post_action.value.fail_over_directions
@@ -83,7 +83,7 @@ resource "azurerm_site_recovery_replication_recovery_plan" "site_recovery_replic
       }
     }
     dynamic "pre_action" {
-      for_each = each.value.shutdown_recovery_group.pre_action != null ? [each.value.shutdown_recovery_group.pre_action] : []
+      for_each = each.value.shutdown_recovery_group.pre_action != null ? each.value.shutdown_recovery_group.pre_action : []
       content {
         fabric_location           = pre_action.value.fabric_location
         fail_over_directions      = pre_action.value.fail_over_directions
