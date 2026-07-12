@@ -1,3 +1,7 @@
+output "site_recovery_replication_recovery_plans_id" {
+  description = "Map of id values across all site_recovery_replication_recovery_plans, keyed the same as var.site_recovery_replication_recovery_plans"
+  value       = { for k, v in azurerm_site_recovery_replication_recovery_plan.site_recovery_replication_recovery_plans : k => v.id }
+}
 output "site_recovery_replication_recovery_plans_azure_to_azure_settings" {
   description = "Map of azure_to_azure_settings values across all site_recovery_replication_recovery_plans, keyed the same as var.site_recovery_replication_recovery_plans"
   value       = { for k, v in azurerm_site_recovery_replication_recovery_plan.site_recovery_replication_recovery_plans : k => v.azure_to_azure_settings }
